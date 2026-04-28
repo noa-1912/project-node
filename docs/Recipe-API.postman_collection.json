@@ -1,0 +1,181 @@
+{
+  "info": {
+    "_postman_id": "d4c6d949-1f04-4b29-9be2-cb0cff4a52bb",
+    "name": "Recipe API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"dana\",\n  \"email\": \"dana@example.com\",\n  \"password\": \"StrongPass1!\",\n  \"address\": \"Tel Aviv\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dana@example.com\",\n  \"password\": \"StrongPass1!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] }
+          }
+        },
+        {
+          "name": "Update Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"NewStrong1!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}/password", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}", "password"] }
+          }
+        },
+        {
+          "name": "Delete User (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recipes",
+      "item": [
+        {
+          "name": "Get Recipes",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/recipes?search=&limit=5&page=1", "host": ["{{baseUrl}}"], "path": ["recipes"], "query": [{ "key": "search", "value": "" }, { "key": "limit", "value": "5" }, { "key": "page", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Get Recipe By Id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/recipes/{{recipeId}}", "host": ["{{baseUrl}}"], "path": ["recipes", "{{recipeId}}"] }
+          }
+        },
+        {
+          "name": "Get Recipes By Prep Time",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/recipes/by-prep-time/30", "host": ["{{baseUrl}}"], "path": ["recipes", "by-prep-time", "30"] }
+          }
+        },
+        {
+          "name": "Create Recipe",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chocolate Cake\",\n  \"description\": \"Rich layered cake\",\n  \"categories\": [\"Dessert\"],\n  \"prepTimeMinutes\": 60,\n  \"difficulty\": 3,\n  \"layers\": [{ \"description\": \"Cake\", \"ingredients\": [\"Flour\", \"Sugar\"] }],\n  \"instructions\": [\"Mix\", \"Bake\"],\n  \"image\": \"\",\n  \"isPrivate\": false\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/recipes", "host": ["{{baseUrl}}"], "path": ["recipes"] }
+          }
+        },
+        {
+          "name": "Update Recipe",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chocolate Cake Updated\",\n  \"description\": \"Rich layered cake\",\n  \"categories\": [\"Dessert\"],\n  \"prepTimeMinutes\": 55,\n  \"difficulty\": 3,\n  \"layers\": [{ \"description\": \"Cake\", \"ingredients\": [\"Flour\", \"Sugar\"] }],\n  \"instructions\": [\"Mix\", \"Bake\"],\n  \"image\": \"\",\n  \"isPrivate\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/recipes/{{recipeId}}", "host": ["{{baseUrl}}"], "path": ["recipes", "{{recipeId}}"] }
+          }
+        },
+        {
+          "name": "Delete Recipe",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/recipes/{{recipeId}}", "host": ["{{baseUrl}}"], "path": ["recipes", "{{recipeId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          }
+        },
+        {
+          "name": "Get Categories With Recipes",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/categories/with-recipes", "host": ["{{baseUrl}}"], "path": ["categories", "with-recipes"] }
+          }
+        },
+        {
+          "name": "Get Category By Code Or Name",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/categories/{{codeOrName}}", "host": ["{{baseUrl}}"], "path": ["categories", "{{codeOrName}}"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "recipeId", "value": "" },
+    { "key": "codeOrName", "value": "" }
+  ]
+}

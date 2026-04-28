@@ -1,34 +1,47 @@
-const mongoose = require('mongoose');// models/user.js
-const { Schema } = mongoose;//זה המודל של המשתמש
+const mongoose = require("mongoose");
 
-const userSchema = new Schema({//הגדרת הסכמה של המשתמש
-    username: {//שם המשתמש
-        type: String,//סוג הנתון הוא מחרוזת
-        required: true,//נדרש
-        trim: true//מסיר רווחים מיותרים
+const { Schema } = mongoose;
+
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 2,
+      maxlength: 50,
     },
-    password: {//סיסמה
-        type: String,//סוג הנתון הוא מחרוזת
-        required: true//נדרש
+    password: {
+      type: String,
+      required: true,
     },
-    email: {//אימייל
-        type: String,//סוג הנתון הוא מחרוזת
-        required: true,//נדרש
-        unique: true,//ייחודי
-        lowercase: true,//ממיר לאותיות קטנות
-        trim: true//מסיר רווחים מיותרים
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
     address: {
-        type: String,//כתובת
-        trim: true//מסיר רווחים מיותרים
+      type: String,
+      trim: true,
+      default: "",
     },
     role: {
-        type: String,//תפקיד
-        enum: ['admin', 'user', 'guest'],//רשימת תפקידים אפשריים
-        default: 'user'//ברירת מחדל היא משתמש רגיל שהו כמורשום באתר ולא מנהל או אורח כמו
-    }
-}, {
-    timestamps: true//יוצר שדות createdAt ו-updatedAt אוטומטית
-});
+      type: String,
+      enum: ["admin", "user", "guest"],
+      default: "user",
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (doc, ret) => {
+        delete ret.password;
+        return ret;
+      },
+    },
+  }
+);
 
-module.exports = mongoose.model('User', userSchema);//ייצוא המודל של המשתמש לשימוש בקבצים אחרים
+module.exports = mongoose.model("User", userSchema);

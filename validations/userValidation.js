@@ -1,18 +1,32 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
-const userValidationSchema = Joi.object({
-    username: Joi.string().trim().min(2).required(),
+const passwordRule = Joi.string()
+  .min(8)
+  .max(128)
+  .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/)
+  .messages({
+    "string.pattern.base":
+      "Password must include upper, lower, number and special character",
+  });
 
-    password: Joi.string()
-        .min(8)
-        .pattern(new RegExp('^(?=.*[a-zA-Z])(?=.*\\d).+$'))
-        .required(),
-
-    email: Joi.string().trim().email().required(),
-
-    address: Joi.string().trim().allow(''),
-
-    role: Joi.string().valid('admin', 'user', 'guest')
+const registerSchema = Joi.object({
+  username: Joi.string().trim().min(2).max(50).required(),
+  password: passwordRule.required(),
+  email: Joi.string().trim().email().required(),
+  address: Joi.string().trim().allow(""),
 });
 
-module.exports = userValidationSchema;
+const loginSchema = Joi.object({
+  email: Joi.string().trim().email().required(),
+  password: Joi.string().required(),
+});
+
+const updatePasswordSchema = Joi.object({
+  password: passwordRule.required(),
+});
+
+module.exports = {
+  registerSchema,
+  loginSchema,
+  updatePasswordSchema,
+};

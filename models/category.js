@@ -1,28 +1,37 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
 const { Schema } = mongoose;
 
-const categorySchema = new Schema({
-    code: {//קוד קטגוריה ייחודי
-        type: String,//סוג הנתון הוא מחרוזת
-        required: true,//נדרש
-        unique: true//ייחודי
+const categorySchema = new Schema(
+  {
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
-    description: {//תיאור הקטגוריה
-        type: String,//סוג הנתון הוא מחרוזת
-        required: true,//נדרש
-        trim: true//מסיר רווחים מיותרים
+    description: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    recipeCount: {//מספר המתכונים בקטגוריה זו
-        type: Number,//סוג הנתון הוא מספר
-        default: 0//ברירת מחדל היא 0
+    recipeCount: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
-    recipes: [{//מערך של מתכונים ששייכים לקטגוריה זו
-        type: Schema.Types.ObjectId,//שימוש בREFERENCE כדי לקשר למתכונים
-        ref: 'Recipe'//השם של המודל שאליו אנחנו מקשרים
-    }]
-}, {
-    timestamps: true//יוצר שדות createdAt ו-updatedAt אוטומטית
-});
+    recipes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Recipe",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
-//ייצוא המודל של הקטגוריה לשימוש בקבצים אחרים
-module.exports = mongoose.model('Category', categorySchema);
+categorySchema.index({ description: 1 });
+
+module.exports = mongoose.model("Category", categorySchema);
